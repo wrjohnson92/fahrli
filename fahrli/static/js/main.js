@@ -10,7 +10,7 @@ window.onload = function () {
 function BuildGraphCredit() {
 	$.getJSON($SCRIPT_ROOT + '/get_data', function(data) {
 		let pData = data.map((x) => JSON.parse(x));
-		let mapData = BuildMapDataCredit(pData);
+		let mapData = BuildMapDataCredit(pData, "Credits");
 		BuildGraph(mapData);
 	});
 }
@@ -19,11 +19,11 @@ function BuildGraphWorkUnits() {
 	$.getJSON($SCRIPT_ROOT + '/get_data', function(data) {
 		let pData = data.map((x) => JSON.parse(x));
 		let mapData = BuildMapDataWorkUnits(pData);
-		BuildGraph(mapData);
+		BuildGraph(mapData, "Work Units");
 	});
 }
 
-function BuildGraph(mapData) {
+function BuildGraph(mapData, axisLabel) {
     let chart = new CanvasJS.Chart("chartContainer", {
 		animationEnabled: true,
 		title:{
@@ -35,7 +35,7 @@ function BuildGraph(mapData) {
 		},
 		axisY2: {
 	      	gridThickness: 1,
-			title: "Work Units",
+			title: axisLabel,
 			titleFontColor: "black",
 			labelFontColor: "black"
 		},
