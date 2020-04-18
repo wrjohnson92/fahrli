@@ -10,8 +10,8 @@ window.onload = function () {
 function BuildGraphCredit() {
 	$.getJSON($SCRIPT_ROOT + '/get_data', function(data) {
 		let pData = data.map((x) => JSON.parse(x));
-		let mapData = BuildMapDataCredit(pData, "Credits");
-		BuildGraph(mapData);
+		let mapData = BuildMapDataCredit(pData);
+		BuildGraph(mapData, "Credits");
 	});
 }
 
