@@ -1,0 +1,1 @@
+fahstats_db_string = "postgres://fahstats:fahstats@localhost/fahstats"

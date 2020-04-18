@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <title>{{ title }}</title>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+    	<script nonce="{{ csp_nonce() }}" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script nonce="{{ csp_nonce() }}" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+        <link nonce="{{ csp_nonce() }}" rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/main.css') }}"> 
+    	<script nonce="{{ csp_nonce() }}" type=text/javascript src="{{url_for('static', filename='js/main.js') }}"></script>
+        <script nonce="{{ csp_nonce() }}" type=text/javascript>$SCRIPT_ROOT = {{ request.script_root|tojson|safe }}</script>
+    </head>
+    <body>
+        <div id="chartContainer"></div>
+
+        <button id='credits'> Show Credits </button>
+        <button id='workunits'> Show Work Units </button>
+        <table>
+            <thead>
+                <tr>
+                    <th>Entry ID</th>
+                    <th>Date Added</th>
+                    <th>User ID</th>
+                    <th>Team ID</th>
+                    <th>UserName</th>
+                    <th>Credit</th>
+                    <th>Work Units</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in data %}
+                <tr>
+                    <td>{{ entry.EntryId }}</td> 
+                    <td>{{ entry.DateAdded }}</td> 
+                    <td>{{ entry.UserId }}</td> 
+                    <td>{{ entry.TeamId }}</td> 
+                    <td>{{ entry.UserName }}</td> 
+                    <td>{{ entry.Credit }}</td> 
+                    <td>{{ entry.WorkUnits }}</td>
+                </tr>                
+                {% endfor %}
+            </tbody>
+        </table>
+            
+    </body>
+</html>
