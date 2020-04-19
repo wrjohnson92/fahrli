@@ -79,8 +79,6 @@ function BuildMapDataCredit(rawData) {
 							name: d.UserName,
 							markerSize: 5,
 							axisYType: "secondary",
-							//xValueFormatString: "YYYY",
-							//yValueFormatString: "#,##0.0\"%\"",
 							showInLegend: true,
 							dataPoints: [] }
 		}
@@ -88,7 +86,7 @@ function BuildMapDataCredit(rawData) {
 		let newDate = new Date(d.DateAdded.year + "-" + d.DateAdded.month + "-" + d.DateAdded.day + " " 
 							 + d.DateAdded.hour  + ":" + d.DateAdded.minute  + ":" + d.DateAdded.second + " GMT");
 
-		ret[d.UserId].dataPoints.push({x: newDate, y: d.WorkUnits});
+		ret[d.UserId].dataPoints.push({x: newDate, y: d.Credit});
 	});
 
 	return Object.keys(ret).map((key) => ret[key]);
@@ -104,8 +102,6 @@ function BuildMapDataWorkUnits(rawData) {
 							name: d.UserName,
 							markerSize: 5,
 							axisYType: "secondary",
-							//xValueFormatString: "YYYY",
-							//yValueFormatString: "#,##0.0\"%\"",
 							showInLegend: true,
 							dataPoints: [] }
 		}
