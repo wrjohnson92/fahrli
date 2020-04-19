@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
   document.querySelector('#credits').addEventListener('click', BuildGraphCredit);
-  document.querySelector('#workunits').addEventListener('click', BuildGraphWorkUnits);
+  document.querySelector('#workunits').addEventListener('click', BuildGraphWorkUnits);  
+  document.querySelector('#creditsweekly').addEventListener('click', BuildGraphCreditWeekly);
+  document.querySelector('#workunitsweekly').addEventListener('click', BuildGraphWorkUnitsWeekly);
+  document.querySelector('#creditsdaily').addEventListener('click', BuildGraphCreditDaily);
+  document.querySelector('#workunitsdaily').addEventListener('click', BuildGraphWorkUnitsDaily);  
 });
 
 window.onload = function () {
@@ -18,6 +22,52 @@ function BuildGraphCredit() {
 function BuildGraphWorkUnits() {
 	$.getJSON($SCRIPT_ROOT + '/get_data', function(data) {
 		let pData = data.map((x) => JSON.parse(x));
+		let mapData = BuildMapDataWorkUnits(pData);
+		BuildGraph(mapData, "Work Units");
+	});
+}
+
+function BuildGraphCreditWeekly() {
+	$.getJSON($SCRIPT_ROOT + '/get_data', function(data) {
+		let pData = data.map((x) => JSON.parse(x));
+		let t = new Date();
+  		t.setDate(t.getDate() - t.getDay());
+    	t.setHours(0,0,0,0);
+    	pData = TrimAndNormalizeData(pData, t);
+		let mapData = BuildMapDataCredit(pData);
+		BuildGraph(mapData, "Credits");
+	});
+}
+
+function BuildGraphWorkUnitsWeekly() {
+	$.getJSON($SCRIPT_ROOT + '/get_data', function(data) {
+		let pData = data.map((x) => JSON.parse(x));
+		let t = new Date();
+  		t.setDate(t.getDate() - t.getDay());
+    	t.setHours(0,0,0,0);
+    	pData = TrimAndNormalizeData(pData, t);
+		let mapData = BuildMapDataWorkUnits(pData);
+		BuildGraph(mapData, "Work Units");
+	});
+}
+
+function BuildGraphCreditDaily() {
+	$.getJSON($SCRIPT_ROOT + '/get_data', function(data) {
+		let pData = data.map((x) => JSON.parse(x));
+		let t = new Date();
+    	t.setHours(0,0,0,0);
+    	pData = TrimAndNormalizeData(pData, t);
+		let mapData = BuildMapDataCredit(pData);
+		BuildGraph(mapData, "Credits");
+	});
+}
+
+function BuildGraphWorkUnitsDaily() {
+	$.getJSON($SCRIPT_ROOT + '/get_data', function(data) {
+		let pData = data.map((x) => JSON.parse(x));
+		let t = new Date();
+    	t.setHours(0,0,0,0);
+    	pData = TrimAndNormalizeData(pData, t);
 		let mapData = BuildMapDataWorkUnits(pData);
 		BuildGraph(mapData, "Work Units");
 	});
@@ -98,7 +148,7 @@ function BuildMapDataWorkUnits(rawData) {
 	rawData.forEach((d) => {
 		if(ret[d.UserId] == null)
 		{
-			ret[d.UserId] = { type: "spline",
+			ret[d.UserId] = { type: "line",
 							name: d.UserName,
 							markerSize: 5,
 							axisYType: "secondary",
@@ -113,4 +163,31 @@ function BuildMapDataWorkUnits(rawData) {
 	});
 
 	return Object.keys(ret).map((key) => ret[key]);
+}
+
+function TrimAndNormalizeData(data, cutoffDay) {
+	var ret = [];
+	var lowestEntry = [];
+	for(dI in data)
+	{
+		let d = data[dI];
+		let dIDate = new Date(d.DateAdded.year + "-" + d.DateAdded.month + "-" + d.DateAdded.day + " " 
+							 + d.DateAdded.hour  + ":" + d.DateAdded.minute  + ":" + d.DateAdded.second + " GMT");
+		if(dIDate > cutoffDay)
+		{
+			ret.push(d);
+			if(lowestEntry[d.UserId] == null)
+				lowestEntry[d.UserId] = { Credit: d.Credit, WorkUnits: d.WorkUnits }
+			else if(lowestEntry[d.UserId].Credit >= d.UserId.Credit && lowestEntry[d.UserId].WorkUnits >= d.UserId.WorkUnits)
+				lowestEntry[d.UserId] = { Credit: d.Credit, WorkUnits: d.WorkUnits }
+		}
+	}
+
+	for(dI in ret)
+	{
+		ret[dI].Credit -= lowestEntry[ret[dI].UserId].Credit;
+		ret[dI].WorkUnits -= lowestEntry[ret[dI].UserId].WorkUnits;
+	}
+
+	return ret;
 }
