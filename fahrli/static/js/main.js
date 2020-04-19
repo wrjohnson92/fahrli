@@ -85,8 +85,10 @@ function BuildMapDataCredit(rawData) {
 							dataPoints: [] }
 		}
 
-		ret[d.UserId].dataPoints.push({x: new Date(d.DateAdded.year, d.DateAdded.month, d.DateAdded.day, 
-													d.DateAdded.hour, d.DateAdded.minute, d.DateAdded.second), y: d.Credit});
+		let newDate = new Date(d.DateAdded.year + "-" + d.DateAdded.month + "-" + d.DateAdded.day + " " 
+							 + d.DateAdded.hour  + ":" + d.DateAdded.minute  + ":" + d.DateAdded.second + " GMT");
+
+		ret[d.UserId].dataPoints.push({x: newDate, y: d.WorkUnits});
 	});
 
 	return Object.keys(ret).map((key) => ret[key]);
@@ -108,8 +110,10 @@ function BuildMapDataWorkUnits(rawData) {
 							dataPoints: [] }
 		}
 
-		ret[d.UserId].dataPoints.push({x: new Date(d.DateAdded.year, d.DateAdded.month, d.DateAdded.day, 
-													d.DateAdded.hour, d.DateAdded.minute, d.DateAdded.second), y: d.WorkUnits});
+		let newDate = new Date(d.DateAdded.year + "-" + d.DateAdded.month + "-" + d.DateAdded.day + " " 
+							 + d.DateAdded.hour  + ":" + d.DateAdded.minute  + ":" + d.DateAdded.second + " GMT");
+
+		ret[d.UserId].dataPoints.push({x: newDate, y: d.WorkUnits});
 	});
 
 	return Object.keys(ret).map((key) => ret[key]);
