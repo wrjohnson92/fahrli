@@ -10,6 +10,7 @@ pyopenssl = "*"
 flask-talisman = "*"
 sqlalchemy = "*"
 psycopg2 = "*"
+gunicorn = "*"
 
 [dev-packages]
 
