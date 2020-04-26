@@ -1,11 +1,12 @@
 from fahrli import fahrli
-from flask import render_template, jsonify
+from flask import render_template, jsonify, send_file
 from flask_wtf.csrf import CSRFError
 from fahrli.controllers import DataController
 from fahrli.models import FAHEntry
 import urllib.request
 import json
 import datetime
+from PIL import Image
 
 @fahrli.route('/')
 @fahrli.route('/index')
@@ -31,13 +32,8 @@ def main():
 	if somethingchanged:
 		for curentry in curdata:
 			DataController.WriteFAHEntry(curentry)
-
-	data = DataController.ReadFAHEntries()
-	jsondata = []
-	for d in data:
-		jsondata.append(d.toJSON())
 	
-	return render_template('index.html', title='Folding @ WFH Stats', data=data)
+	return render_template('index.html', title='Folding @ WFH Stats')
 
 @fahrli.route('/get_data')
 def get_data():	
@@ -46,6 +42,10 @@ def get_data():
 	for d in data:
 		jsondata.append(d.toJSON())
 	return jsonify(jsondata)
+
+@fahrli.route('/img')
+def get_img():
+    return send_file("img.jpg", mimetype="image/jpeg", as_attachment=True)
 
 @fahrli.errorhandler(CSRFError)
 def handle_csrf_error(e):

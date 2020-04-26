@@ -11,6 +11,7 @@ flask-talisman = "*"
 sqlalchemy = "*"
 psycopg2 = "*"
 gunicorn = "*"
+pillow = "*"
 
 [dev-packages]
 

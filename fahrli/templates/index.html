@@ -20,32 +20,5 @@
         <br>        
         <button id='creditsdaily'> Show Daily(ish) Credits </button>
         <button id='workunitsdaily'> Show Daily(ish) Work Units </button>
-        <table>
-            <thead>
-                <tr>
-                    <th>Entry ID</th>
-                    <th>Date Added</th>
-                    <th>User ID</th>
-                    <th>Team ID</th>
-                    <th>UserName</th>
-                    <th>Credit</th>
-                    <th>Work Units</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for entry in data %}
-                <tr>
-                    <td>{{ entry.EntryId }}</td> 
-                    <td>{{ entry.DateAdded }}</td> 
-                    <td>{{ entry.UserId }}</td> 
-                    <td>{{ entry.TeamId }}</td> 
-                    <td>{{ entry.UserName }}</td> 
-                    <td>{{ entry.Credit }}</td> 
-                    <td>{{ entry.WorkUnits }}</td>
-                </tr>                
-                {% endfor %}
-            </tbody>
-        </table>
-            
     </body>
 </html>
